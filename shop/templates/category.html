@@ -1,71 +1,60 @@
 {% extends 'base.html' %}
 
 {% block content %}
-        <!-- Header-->
-        <header class="bg-black py-5">
-            <div class="container px-4 px-lg-5 my-5">
-                <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">{{ category }}</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">Category Page</p>
-                </div>
+    <!-- Header-->
+    <header class="bg-black py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">{{ category }}</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Explore our amazing collection in this category</p>
             </div>
-        </header>
-        <!-- Section-->
-        <section class="py-5">
+        </div>
+    </header>
 
-            <div class="container px-4 px-lg-5 mt-5">
-                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+    <!-- Category Products Section-->
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 justify-content-center">
                 {% for product in products %}
-                    {% if product.is_sale %}
-                      <div class="col mb-5">
-                        <div class="card h-100">
+                    <div class="col mb-5">
+                        <div class="card h-100 shadow-sm border-light rounded">
                             <!-- Product image-->
-                            <img class="card-img-top" src="{{ product.image.url }}" alt="..." />
+                            <img class="card-img-top rounded-top" src="{{ product.image.url }}" alt="{{ product.name }}" style="object-fit: cover; height: 250px;" />
+
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
                                     <!-- Product name-->
-                                    <h5 class="fw-bolder">{{ product.name }}</h5>
-                                    <!-- Product price-->
-                                    <strike>sh{{ product.price }}</strike>
-                                    &nbsp;
-                                    sh{{ product.sale_price }}
-                                    <br/>
+                                    <h5 class="fw-bolder text-truncate" style="max-width: 200px;">{{ product.name }}</h5>
 
+                                    <!-- Product price-->
+                                    <div class="d-flex justify-content-center align-items-baseline mt-2">
+                                        {% if product.is_sale %}
+                                            <strike class="text-muted me-2">sh{{ product.price }}</strike>
+                                            <span class="fs-4 text-danger">sh{{ product.sale_price }}</span>
+                                        {% else %}
+                                            <span class="fs-4">sh{{ product.price }}</span>
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
+
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'product' product.id %}">View Product</a></div>
+                                <div class="d-grid">
+                                    <a class="btn btn-outline-dark mt-auto" href="{% url 'product' product.id %}">
+                                        {% if product.is_sale %}
+                                            <i class="bi bi-tag me-2"></i> View Sale Product
+                                        {% else %}
+                                            <i class="bi bi-eye me-2"></i> View Product Options
+                                        {% endif %}
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    {% else %}
-                <div class="col mb-5">
-                        <div class="card h-100">
-                            <!-- Product image-->
-                            <img class="card-img-top" src="{{ product.image.url }}" alt="..." />
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h5 class="fw-bolder">{{ product.name }}</h5>
-                                    <!-- Product price-->
-                                    sh{{ product.price }}
-                                    <br/>
-
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'product' product.id %}">View options</a></div>
-                            </div>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endfor %}
-
-                </div>
+                {% endfor %}
             </div>
-        </section>
+        </div>
+    </section>
 {% endblock %}

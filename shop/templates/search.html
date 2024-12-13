@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- Header -->
+<header class="bg-black py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Search Products</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Search For All Your Products Here</p>
+        </div>
+    </div>
+</header>
+
+<!-- Search Section -->
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <!-- Search Bar -->
+            <form method="POST" action="{% url 'search' %}">
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="🔍 Search for products..." name="searched" aria-label="Search">
+                    <button type="submit" class="btn btn-secondary">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Product Results Section -->
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+        {% if searched %}
+            {% for product in searched %}
+                <div class="col mb-5">
+                    <div class="card h-100">
+                        <!-- Product Image -->
+                        <img class="card-img-top" src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy" />
+                        <!-- Product Details -->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <h5 class="fw-bolder">{{ product.name }}</h5>
+                                {% if product.is_sale %}
+                                    <strike>sh{{ product.price }}</strike>&nbsp; sh{{ product.sale_price }}
+                                {% else %}
+                                    sh{{ product.price }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <!-- Product Actions -->
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center">
+                                <a class="btn btn-outline-dark mt-auto" href="{% url 'product' product.id %}">View Product</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+
+<!-- Loading Spinner (Optional for when the products are being fetched) -->
+{% if not searched %}
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>   <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
+{% endif %}
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{#{% extends 'base.html' %}#}
+{#{% block content %}#}
+{##}
+{#     <!-- Header-->#}
+{#        <header class="bg-black py-5">#}
+{#            <div class="container px-4 px-lg-5 my-5">#}
+{#                <div class="text-center text-white">#}
+{#                    <h1 class="display-4 fw-bolder">Search Products</h1>#}
+{#                    <p class="lead fw-normal text-white-50 mb-0">Search For All Your Products Here#}
+{#                    </p>#}
+{#                </div>#}
+{#            </div>#}
+{#        </header>#}
+{#    <div class="container">#}
+{#    <div class="row">#}
+{#        <center>#}
+{#        <div class="col-10">#}
+{#            <div class="about-text text-center">#}
+{#                <p align="justify">#}
+{#                    <br/><br/>#}
+{#<div class="card">#}
+{#  <div class="card-header">#}
+{#    Search Products#}
+{#  </div>#}
+{#  <div class="card-body">#}
+{#      <form method="POST" action="{% url 'search' %}">#}
+{#      {% csrf_token %}#}
+{#      <div class="mb-3">#}
+{##}
+{#  <input type="text" class="form-control"  placeholder="Search for your products here" name="searched">#}
+{#</div>#}
+{#<button type="submit" class="btn btn-secondary">Search</button>#}
+{#    </form>#}
+{#</div>#}
+{#  </div>#}
+{#</div>#}
+{#<div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">#}
+{#            <br/>#}
+{#            {%  if searched %}#}
+{#            {% for product in searched %}#}
+{#                  {% if product.is_sale %}#}
+{#                      <div class="col mb-5">#}
+{#                        <div class="card h-100">#}
+{#                            <!-- Product image-->#}
+{#                            <img class="card-img-top" src="{{ product.image.url }}" alt="..." />#}
+{#                            <!-- Product details-->#}
+{#                            <div class="card-body p-4">#}
+{#                                <div class="text-center">#}
+{#                                    <!-- Product name-->#}
+{#                                    <h5 class="fw-bolder">{{ product.name }}</h5>#}
+{#                                    <!-- Product price-->#}
+{#                                    <strike>sh{{ product.price }}</strike>#}
+{#                                    &nbsp;#}
+{#                                    sh{{ product.sale_price }}#}
+{#                                    <br/>#}
+{##}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <!-- Product actions-->#}
+{#                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">#}
+{#                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'product' product.id %}">View Product</a></div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    {% else %}#}
+{#                <div class="col mb-5">#}
+{#                        <div class="card h-100">#}
+{#                            <!-- Product image-->#}
+{#                            <img class="card-img-top" src="{{ product.image.url }}" alt="..." />#}
+{#                            <!-- Product details-->#}
+{#                            <div class="card-body p-4">#}
+{#                                <div class="text-center">#}
+{#                                    <!-- Product name-->#}
+{#                                    <h5 class="fw-bolder">{{ product.name }}</h5>#}
+{#                                    <!-- Product price-->#}
+{#                                    sh{{ product.price }}#}
+{#                                    <br/>#}
+{##}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <!-- Product actions-->#}
+{#                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">#}
+{#                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'product' product.id %}">View options</a></div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    {% endif %}#}
+{#                {% endfor %}#}
+{##}
+{#            {% endif %}#}
+{#            </div>#}
+{#        </div>#}
+{#        </center>#}
+{#    </div>#}
+{#</div>#}
+{#<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>#}
+{##}
+{##}
+{##}
+{##}
+{#{% endblock %}#}

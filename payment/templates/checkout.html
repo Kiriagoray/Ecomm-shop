@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Header -->
+<header class="bg-black py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Checkout</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Fill in your details and place your order.</p>
+        </div>
+    </div>
+</header>
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- Order Summary Section -->
+        <div class="col-md-8 offset-md-2">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5>Order Summary</h5>
+                </div>
+                <div class="card-body">
+                    <h6><strong>Items in your cart:</strong></h6>
+                    {% for product in cart_products %}
+                    <div class="d-flex justify-content-between">
+                        <span>{{ product.name }}</span>
+                        <span>
+                            {% if product.is_sale %}
+                                sh{{ product.sale_price }}
+                            {% else %}
+                                sh{{ product.price }}
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span><strong>Quantity:</strong>
+                            {% for key, value in quantities.items %}
+                                {% if key == product.id %}
+                                    {{ value }}
+                                {% endif %}
+                            {% endfor %}
+                        </span>
+                    </div>
+                    <hr />
+                    {% endfor %}
+                    <div class="d-flex justify-content-between">
+                        <h6><strong>Payment Amount:</strong></h6>
+                        <h5>Sh{{ totals }}</h5>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shipping Information Section -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-secondary text-white">
+                    <h5>Checkout</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Checkout Page Template -->
+                    <form method="POST" action="{% url 'mpesa' %}">
+                        {% csrf_token %}
+                        <!--  just the button -->
+                        <button type="submit" class="btn btn-success w-100">Place Order</button>
+                    </form>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
